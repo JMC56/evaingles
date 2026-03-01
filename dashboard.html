@@ -7,190 +7,816 @@
 
 <style>
 :root{
-  --bg-url: url("https://i.imgur.com/q7GHWbv.jpeg"); /* 🔥 MISMA URL */
+  --bg-url: url("https://i.imgur.com/q7GHWbv.jpeg");
+  --glass: rgba(255,255,255,.80);
+  --glass2: rgba(255,255,255,.55);
+  --ink: #082424;
+  --muted: rgba(8,36,36,.70);
+  --line: rgba(8,36,36,.14);
+  --shadow: 0 18px 55px rgba(0,0,0,.22);
+  --shadow2: 0 12px 30px rgba(0,0,0,.14);
+  --r: 22px;
+  --r2: 16px;
 }
 
+*{ box-sizing:border-box; }
+html,body{ height:100%; }
 body{
   margin:0;
-  font-family:'Segoe UI', sans-serif;
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, "Noto Sans", "Helvetica Neue", sans-serif;
+  color: var(--ink);
+  background:#071012;
+  padding: 26px;
+  overflow-x:hidden;
+}
+
+/* Fondo global */
+body::before{
+  content:"";
+  position:fixed;
+  inset:0;
   background-image: var(--bg-url);
-  background-size:cover;
+  background-size: cover;
   background-position:center;
-  padding:40px;
+  transform: scale(1.05);
+  filter: saturate(1.05) contrast(1.05);
+  z-index:-2;
+}
+body::after{
+  content:"";
+  position:fixed;
+  inset:0;
+  background:
+    radial-gradient(1200px 700px at 18% 12%, rgba(255,255,255,.35), transparent 60%),
+    radial-gradient(900px 550px at 82% 16%, rgba(255,255,255,.20), transparent 62%),
+    linear-gradient(180deg, rgba(0,0,0,.24), rgba(0,0,0,.38));
+  z-index:-1;
 }
 
-.container{
-  background:rgba(255,255,255,.9);
-  padding:30px;
-  border-radius:20px;
-  box-shadow:0 20px 50px rgba(0,0,0,.3);
-}
-
-.alert{
-  background:#ffcccc;
-  padding:15px;
-  border-radius:10px;
-  margin-bottom:20px;
-  font-weight:bold;
-}
-
-input, select, textarea{
-  width:100%;
-  padding:12px;
-  margin:10px 0;
-  border-radius:12px;
-  border:1px solid #ccc;
-  font-size:14px;
-}
-
-button{
-  padding:12px 20px;
-  border:none;
-  border-radius:12px;
-  background:#0072ff;
-  color:white;
-  cursor:pointer;
-  font-weight:bold;
-  margin-top:10px;
-}
-
-button:hover{
-  opacity:.9;
-}
-
-.grid{
+/* Layout */
+.shell{
+  max-width: 1180px;
+  margin: 0 auto;
   display:grid;
-  grid-template-columns: 1fr 120px;
+  grid-template-columns: 1.2fr .9fr;
+  gap: 18px;
+  align-items:start;
+}
+
+/* Header */
+.topbar{
+  grid-column: 1 / -1;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  padding: 16px 18px;
+  border-radius: var(--r);
+  background: rgba(255,255,255,.65);
+  backdrop-filter: blur(16px);
+  box-shadow: var(--shadow2);
+  border: 1px solid rgba(255,255,255,.45);
+}
+.brand{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+.badgeLogo{
+  width:46px;height:46px;
+  border-radius: 16px;
+  background: rgba(255,255,255,.70);
+  display:grid;
+  place-items:center;
+  box-shadow: var(--shadow2);
+  font-size: 20px;
+}
+.brandTitle{
+  font-weight: 900;
+  letter-spacing:.6px;
+  font-size: 16px;
+}
+.brandSub{
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.btn{
+  appearance:none;
+  border:none;
+  border-radius: 14px;
+  padding: 11px 14px;
+  cursor:pointer;
+  font-weight: 800;
+  letter-spacing:.2px;
+  background: linear-gradient(90deg, #0072ff, #00c6ff);
+  color:white;
+  box-shadow: 0 14px 28px rgba(0,114,255,.25);
+}
+.btn:hover{ transform: translateY(-1px); }
+.btn:active{ transform: translateY(0px) scale(.99); }
+
+.btnGhost{
+  background: rgba(255,255,255,.55);
+  color: var(--ink);
+  border: 1px solid rgba(8,36,36,.14);
+  box-shadow:none;
+}
+
+/* Cards */
+.card{
+  background: rgba(255,255,255,.72);
+  backdrop-filter: blur(18px);
+  border: 1px solid rgba(255,255,255,.45);
+  border-radius: var(--r);
+  box-shadow: var(--shadow);
+  overflow:hidden;
+}
+.cardHead{
+  padding: 16px 18px;
+  border-bottom: 1px solid rgba(8,36,36,.10);
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:10px;
+}
+.cardTitle{
+  font-weight: 950;
+  font-size: 18px;
+  letter-spacing:.3px;
+}
+.cardDesc{
+  margin-top:4px;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+/* Alert */
+.alert{
+  margin: 16px 18px 0;
+  background: rgba(255, 68, 68, .14);
+  border: 1px solid rgba(255, 68, 68, .28);
+  padding: 14px 14px;
+  border-radius: 16px;
+  font-weight: 900;
+  letter-spacing:.2px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+.alertDot{
+  width:12px;height:12px;
+  border-radius:999px;
+  background:#ff3b3b;
+  box-shadow: 0 0 0 6px rgba(255,59,59,.12);
+}
+
+/* Form */
+.bodyPad{ padding: 16px 18px 18px; }
+.formGrid{
+  display:grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+}
+.input, select, textarea{
+  width:100%;
+  padding: 12px 12px;
+  border-radius: 16px;
+  border: 1px solid rgba(8,36,36,.16);
+  background: rgba(255,255,255,.65);
+  outline: none;
+  font-size: 14px;
+  color: var(--ink);
+}
+.input:focus, select:focus, textarea:focus{
+  border-color: rgba(0,114,255,.55);
+  box-shadow: 0 0 0 4px rgba(0,114,255,.12);
+}
+.row2{
+  display:grid;
+  grid-template-columns: 1fr 1fr;
+  gap:10px;
+}
+.smallHint{
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 8px;
+}
+
+/* Right panel: evaluation */
+.evalList{
+  padding: 14px 14px 16px;
+  display:flex;
+  flex-direction:column;
+  gap: 10px;
+}
+.evalItem{
+  display:grid;
+  grid-template-columns: 1fr 140px;
   gap:10px;
   align-items:center;
+  padding: 12px 12px;
+  border-radius: 18px;
+  background: rgba(255,255,255,.60);
+  border: 1px solid rgba(8,36,36,.10);
+}
+.evalName{
+  font-weight: 900;
+  letter-spacing:.2px;
+}
+.evalItem select{
+  padding: 10px 10px;
+  border-radius: 14px;
 }
 
-.total{
-  font-size:18px;
-  font-weight:bold;
-  margin-top:15px;
+.totalBox{
+  margin-top: 2px;
+  padding: 14px 14px;
+  border-radius: 18px;
+  background: linear-gradient(90deg, rgba(0,114,255,.18), rgba(0,198,255,.14));
+  border: 1px solid rgba(0,114,255,.22);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+}
+.totalLabel{
+  font-weight: 950;
+  letter-spacing:.2px;
+}
+.totalScore{
+  font-size: 28px;
+  font-weight: 1000;
+  letter-spacing: 1px;
 }
 
+/* Notes */
+.notes{
+  padding: 16px 18px 18px;
+  display:grid;
+  gap: 10px;
+}
 textarea{
-  background:rgba(255,255,255,.6);
+  background: rgba(255,255,255,.55);
   resize:none;
+  min-height: 90px;
+}
+.actions{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
 }
 
-.hidden{
-  display:none;
+/* Hidden */
+.hidden{ display:none; }
+
+/* Responsive */
+@media (max-width: 980px){
+  .shell{ grid-template-columns: 1fr; }
+  .row2{ grid-template-columns: 1fr; }
 }
 </style>
 </head>
 
 <body>
 
-<div class="container">
+<div class="shell">
 
-  <div class="alert" id="alertBox">
-    ¡ESPERA! todavía no pones los datos
+  <div class="topbar">
+    <div class="brand">
+      <div class="badgeLogo">📋</div>
+      <div>
+        <div class="brandTitle">Dashboard de Evaluación</div>
+        <div class="brandSub">Registra puntuación • notas • exporta imagen PNG</div>
+      </div>
+    </div>
+    <div style="display:flex; gap:10px; align-items:center;">
+      <button class="btn btnGhost" type="button" onclick="resetAll()">Nuevo</button>
+      <button class="btn" type="button" onclick="generateImage()">Exportar PNG</button>
+    </div>
   </div>
 
-  <div id="studentForm">
-    <input type="text" id="studentName" placeholder="Nombre del estudiante">
-    <input type="text" id="studentLevel" placeholder="Nivel">
-    <input type="text" id="studentStudy" placeholder="Qué estudia">
-    <button onclick="saveStudent()">Aceptar</button>
-  </div>
-
-  <div id="evaluationSection" class="hidden">
-
-    <div class="grid">
-      <div>Grammar</div>
-      <select onchange="calculate()">
-        <option>2</option><option>1.5</option><option>1</option><option>0.5</option><option>0</option>
-      </select>
-
-      <div>Pronunciation</div>
-      <select onchange="calculate()">
-        <option>2</option><option>1.5</option><option>1</option><option>0.5</option><option>0</option>
-      </select>
-
-      <div>Intonation</div>
-      <select onchange="calculate()">
-        <option>2</option><option>1.5</option><option>1</option><option>0.5</option><option>0</option>
-      </select>
-
-      <div>Fluency</div>
-      <select onchange="calculate()">
-        <option>2</option><option>1.5</option><option>1</option><option>0.5</option><option>0</option>
-      </select>
-
-      <div>Comprehension</div>
-      <select onchange="calculate()">
-        <option>2</option><option>1.5</option><option>1</option><option>0.5</option><option>0</option>
-      </select>
+  <!-- Left: Datos -->
+  <section class="card">
+    <div class="cardHead">
+      <div>
+        <div class="cardTitle">Datos del Estudiante</div>
+        <div class="cardDesc">Primero llena la información para habilitar la evaluación.</div>
+      </div>
     </div>
 
-    <div class="total">Total: <span id="totalScore">10</span></div>
+    <div class="alert" id="alertBox">
+      <div class="alertDot"></div>
+      ¡ESPERA! todavía no pones los datos
+    </div>
 
-    <textarea id="mistakes" rows="3" placeholder="Palabras que falló"></textarea>
-    <textarea id="comments" rows="3" placeholder="Comentarios del profesor"></textarea>
+    <div class="bodyPad" id="studentForm">
+      <div class="formGrid">
+        <input class="input" type="text" id="studentName" placeholder="Nombre del estudiante (Ej: James)" />
+        <div class="row2">
+          <input class="input" type="text" id="studentLevel" placeholder="Nivel (Ej: 3)" />
+          <input class="input" type="text" id="studentStudy" placeholder="Qué estudia (Ej: Inglés)" />
+        </div>
 
-    <button onclick="generateImage()">Generar Imagen</button>
+        <button class="btn" type="button" onclick="saveStudent()">Aceptar y continuar</button>
+        <div class="smallHint">Tip: cuando exportas PNG, todo lo que escribas aquí se verá en grande y centrado.</div>
+      </div>
+    </div>
 
-  </div>
+    <div class="bodyPad hidden" id="studentSummary">
+      <div style="display:flex; flex-direction:column; gap:10px;">
+        <div class="evalItem" style="grid-template-columns: 1fr;">
+          <div style="display:flex; flex-direction:column; gap:6px;">
+            <div style="font-weight:950; font-size:16px;">Resumen</div>
+            <div style="color:var(--muted); font-size:13px;" id="sumLine">—</div>
+          </div>
+        </div>
+        <div class="actions">
+          <button class="btn btnGhost" type="button" onclick="editStudent()">Editar datos</button>
+          <button class="btn" type="button" onclick="generateImage()">Exportar PNG</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Right: Evaluación -->
+  <section class="card">
+    <div class="cardHead">
+      <div>
+        <div class="cardTitle">Áreas de Evaluación</div>
+        <div class="cardDesc">Selecciona puntajes: 2 / 1.5 / 1 / 0.5 / 0</div>
+      </div>
+    </div>
+
+    <div id="evaluationSection" class="hidden">
+
+      <div class="evalList" id="evalList">
+        <div class="evalItem">
+          <div class="evalName">Grammar</div>
+          <select onchange="calculate()" data-key="Grammar">
+            <option value="2">2</option><option value="1.5">1.5</option><option value="1">1</option><option value="0.5">0.5</option><option value="0">0</option>
+          </select>
+        </div>
+
+        <div class="evalItem">
+          <div class="evalName">Pronunciation</div>
+          <select onchange="calculate()" data-key="Pronunciation">
+            <option value="2">2</option><option value="1.5">1.5</option><option value="1">1</option><option value="0.5">0.5</option><option value="0">0</option>
+          </select>
+        </div>
+
+        <div class="evalItem">
+          <div class="evalName">Intonation</div>
+          <select onchange="calculate()" data-key="Intonation">
+            <option value="2">2</option><option value="1.5">1.5</option><option value="1">1</option><option value="0.5">0.5</option><option value="0">0</option>
+          </select>
+        </div>
+
+        <div class="evalItem">
+          <div class="evalName">Fluency</div>
+          <select onchange="calculate()" data-key="Fluency">
+            <option value="2">2</option><option value="1.5">1.5</option><option value="1">1</option><option value="0.5">0.5</option><option value="0">0</option>
+          </select>
+        </div>
+
+        <div class="evalItem">
+          <div class="evalName">Comprehension</div>
+          <select onchange="calculate()" data-key="Comprehension">
+            <option value="2">2</option><option value="1.5">1.5</option><option value="1">1</option><option value="0.5">0.5</option><option value="0">0</option>
+          </select>
+        </div>
+
+        <div class="totalBox">
+          <div class="totalLabel">Total Score</div>
+          <div class="totalScore" id="totalScore">10</div>
+        </div>
+      </div>
+
+      <div class="notes">
+        <textarea id="mistakes" placeholder="Palabras que falló (ej: cat, clothes, vegetable)"></textarea>
+        <textarea id="comments" placeholder="Comentarios del profesor"></textarea>
+        <div class="actions">
+          <button class="btn" type="button" onclick="generateImage()">Generar imagen bonita (PNG)</button>
+          <button class="btn btnGhost" type="button" onclick="copySummary()">Copiar resumen</button>
+        </div>
+        <div class="smallHint">El PNG sale con título grande, datos centrados, total grande y notas con formato.</div>
+      </div>
+
+    </div>
+
+    <div class="bodyPad" id="evalLocked">
+      <div class="evalItem" style="grid-template-columns: 1fr;">
+        <div style="display:flex; flex-direction:column; gap:6px;">
+          <div style="font-weight:950;">Bloqueado</div>
+          <div style="color:var(--muted); font-size:13px;">
+            Llena primero los datos del estudiante para habilitar la evaluación.
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </section>
 
 </div>
 
 <script>
-let studentData = {};
+/* ========= Datos ========= */
+let studentData = { name:"", level:"", study:"" };
 
 function saveStudent(){
-  studentData.name = document.getElementById("studentName").value;
-  studentData.level = document.getElementById("studentLevel").value;
-  studentData.study = document.getElementById("studentStudy").value;
+  studentData.name  = (document.getElementById("studentName").value || "").trim();
+  studentData.level = (document.getElementById("studentLevel").value || "").trim();
+  studentData.study = (document.getElementById("studentStudy").value || "").trim();
 
-  if(!studentData.name) return;
+  if(!studentData.name){
+    shakeAlert();
+    return;
+  }
+
+  // Guardar para uso futuro (si querés abrir directo)
+  localStorage.setItem("eval_student", JSON.stringify(studentData));
 
   document.getElementById("alertBox").style.display="none";
-  document.getElementById("studentForm").style.display="none";
+  document.getElementById("studentForm").classList.add("hidden");
+  document.getElementById("studentSummary").classList.remove("hidden");
+
   document.getElementById("evaluationSection").classList.remove("hidden");
+  document.getElementById("evalLocked").classList.add("hidden");
+
+  renderSummaryLine();
+  calculate();
 }
 
+function renderSummaryLine(){
+  const parts = [];
+  parts.push(`Nombre: ${studentData.name}`);
+  if(studentData.level) parts.push(`Nivel: ${studentData.level}`);
+  if(studentData.study) parts.push(`Estudia: ${studentData.study}`);
+  document.getElementById("sumLine").textContent = parts.join(" • ");
+}
+
+function editStudent(){
+  document.getElementById("studentForm").classList.remove("hidden");
+  document.getElementById("studentSummary").classList.add("hidden");
+  document.getElementById("alertBox").style.display="";
+}
+
+function resetAll(){
+  localStorage.removeItem("eval_student");
+  studentData = { name:"", level:"", study:"" };
+  document.getElementById("studentName").value="";
+  document.getElementById("studentLevel").value="";
+  document.getElementById("studentStudy").value="";
+  document.getElementById("mistakes").value="";
+  document.getElementById("comments").value="";
+
+  // resets selects
+  document.querySelectorAll("#evalList select").forEach(s => s.value = "2");
+  calculate();
+
+  document.getElementById("alertBox").style.display="";
+  document.getElementById("studentForm").classList.remove("hidden");
+  document.getElementById("studentSummary").classList.add("hidden");
+
+  document.getElementById("evaluationSection").classList.add("hidden");
+  document.getElementById("evalLocked").classList.remove("hidden");
+}
+
+/* ========= Total ========= */
 function calculate(){
-  let selects = document.querySelectorAll("select");
+  const selects = document.querySelectorAll("#evalList select");
   let total = 0;
-  selects.forEach(s => total += parseFloat(s.value));
-  document.getElementById("totalScore").innerText = total;
+  selects.forEach(s => total += Number(s.value));
+  document.getElementById("totalScore").textContent = total.toFixed(1).replace(".0","");
 }
 
+/* ========= Copiar resumen ========= */
+function copySummary(){
+  const total = document.getElementById("totalScore").textContent;
+  const mistakes = (document.getElementById("mistakes").value || "").trim();
+  const comments = (document.getElementById("comments").value || "").trim();
+
+  // scores
+  const lines = [];
+  document.querySelectorAll("#evalList .evalItem").forEach(item=>{
+    const name = item.querySelector(".evalName")?.textContent?.trim();
+    const sel  = item.querySelector("select");
+    if(name && sel) lines.push(`${name}: ${sel.value}`);
+  });
+
+  const text =
+`EVALUACION
+Estudiante: ${studentData.name}
+Nivel: ${studentData.level || "-"}
+Estudia: ${studentData.study || "-"}
+${lines.join("\n")}
+Total: ${total}
+Errores: ${mistakes || "-"}
+Comentarios: ${comments || "-"}`;
+
+  navigator.clipboard.writeText(text).then(()=>{
+    toast("Resumen copiado ✅");
+  }).catch(()=>{
+    toast("No se pudo copiar 😕");
+  });
+}
+
+/* ========= PNG bonito ========= */
 function generateImage(){
-  let canvas = document.createElement("canvas");
-  canvas.width = 800;
-  canvas.height = 600;
-  let ctx = canvas.getContext("2d");
-
-  let bg = new Image();
-  bg.crossOrigin="anonymous";
-  bg.src = "https://i.imgur.com/XXXXXXX.jpg"; /* MISMA URL */
-
-  bg.onload = function(){
-    ctx.drawImage(bg,0,0,800,600);
-
-    ctx.fillStyle="white";
-    ctx.font="20px Arial";
-    ctx.fillText("Evaluación del Estudiante", 20,40);
-
-    ctx.fillText("Nombre: "+studentData.name, 20,80);
-    ctx.fillText("Nivel: "+studentData.level, 20,110);
-    ctx.fillText("Estudia: "+studentData.study, 20,140);
-
-    ctx.fillText("Total: "+document.getElementById("totalScore").innerText, 20,180);
-
-    ctx.fillText("Errores: "+document.getElementById("mistakes").value, 20,220);
-    ctx.fillText("Comentarios: "+document.getElementById("comments").value, 20,260);
-
-    let link = document.createElement("a");
-    link.download="evaluacion.png";
-    link.href=canvas.toDataURL();
-    link.click();
+  if(!studentData.name){
+    shakeAlert();
+    return;
   }
+
+  const W = 1080;
+  const H = 1350;
+  const canvas = document.createElement("canvas");
+  canvas.width = W;
+  canvas.height = H;
+  const ctx = canvas.getContext("2d");
+
+  const bg = new Image();
+  bg.crossOrigin = "anonymous";
+  bg.src = "https://i.imgur.com/q7GHWbv.jpeg"; // MISMA URL
+
+  bg.onload = () => {
+    // fondo
+    ctx.drawImage(bg, 0, 0, W, H);
+
+    // overlay oscuro elegante
+    ctx.fillStyle = "rgba(0,0,0,.45)";
+    ctx.fillRect(0,0,W,H);
+
+    // blur falso (capa clara)
+    ctx.fillStyle = "rgba(255,255,255,.06)";
+    ctx.fillRect(0,0,W,H);
+
+    // título grande centrado
+    const title = "EVALUACION";
+    ctx.textAlign = "center";
+    ctx.fillStyle = "rgba(255,255,255,.96)";
+    ctx.font = "900 76px system-ui, -apple-system, Segoe UI, Arial";
+    ctx.fillText(title, W/2, 130);
+
+    ctx.font = "700 28px system-ui, -apple-system, Segoe UI, Arial";
+    ctx.fillStyle = "rgba(255,255,255,.82)";
+    ctx.fillText("Reporte del estudiante", W/2, 175);
+
+    // Card central
+    const cardX = 90, cardY = 240, cardW = W - 180, cardH = 700;
+    roundRect(ctx, cardX, cardY, cardW, cardH, 34);
+    ctx.fillStyle = "rgba(255,255,255,.14)";
+    ctx.fill();
+    ctx.strokeStyle = "rgba(255,255,255,.22)";
+    ctx.lineWidth = 2;
+    ctx.stroke();
+
+    // Nombre GRANDE
+    ctx.textAlign = "center";
+    ctx.fillStyle = "rgba(255,255,255,.98)";
+    ctx.font = "950 64px system-ui, -apple-system, Segoe UI, Arial";
+    const name = studentData.name.toUpperCase();
+    wrapCenter(ctx, name, W/2, cardY + 110, cardW - 120, 64, 1);
+
+    // Línea info
+    ctx.font = "700 30px system-ui, -apple-system, Segoe UI, Arial";
+    ctx.fillStyle = "rgba(255,255,255,.86)";
+    const info = `${studentData.level ? "Nivel: " + studentData.level : "Nivel: —"}   •   ${studentData.study ? "Estudia: " + studentData.study : "Estudia: —"}`;
+    ctx.fillText(info, W/2, cardY + 175);
+
+    // Divider
+    ctx.strokeStyle = "rgba(255,255,255,.18)";
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(cardX + 60, cardY + 215);
+    ctx.lineTo(cardX + cardW - 60, cardY + 215);
+    ctx.stroke();
+
+    // Scores (izq) + Total (der)
+    const total = document.getElementById("totalScore").textContent;
+
+    // Badge total grande
+    const badgeW = 220, badgeH = 140;
+    const badgeX = cardX + cardW - badgeW - 60;
+    const badgeY = cardY + 250;
+
+    roundRect(ctx, badgeX, badgeY, badgeW, badgeH, 28);
+    ctx.fillStyle = "rgba(0,198,255,.22)";
+    ctx.fill();
+    ctx.strokeStyle = "rgba(0,198,255,.30)";
+    ctx.stroke();
+
+    ctx.textAlign = "center";
+    ctx.fillStyle = "rgba(255,255,255,.92)";
+    ctx.font = "900 22px system-ui, -apple-system, Segoe UI, Arial";
+    ctx.fillText("TOTAL SCORE", badgeX + badgeW/2, badgeY + 44);
+    ctx.font = "1000 64px system-ui, -apple-system, Segoe UI, Arial";
+    ctx.fillText(total, badgeX + badgeW/2, badgeY + 108);
+
+    // Lista scores
+    const scoresX = cardX + 70;
+    let y = cardY + 265;
+    ctx.textAlign = "left";
+    ctx.fillStyle = "rgba(255,255,255,.92)";
+    ctx.font = "850 30px system-ui, -apple-system, Segoe UI, Arial";
+
+    const pairs = [];
+    document.querySelectorAll("#evalList .evalItem").forEach(item=>{
+      const key = item.querySelector(".evalName")?.textContent?.trim();
+      const val = item.querySelector("select")?.value;
+      if(key && val) pairs.push([key, val]);
+    });
+
+    pairs.forEach(([k,v])=>{
+      ctx.fillText(k, scoresX, y);
+      ctx.textAlign = "right";
+      ctx.fillText(v, cardX + cardW - 320, y);
+      ctx.textAlign = "left";
+      y += 46;
+    });
+
+    // Notes sections
+    const notesY = cardY + 520;
+
+    ctx.textAlign = "left";
+    ctx.fillStyle = "rgba(255,255,255,.95)";
+    ctx.font = "950 28px system-ui, -apple-system, Segoe UI, Arial";
+    ctx.fillText("PRONUNCIATION / ERRORES", cardX + 60, notesY);
+
+    // box errors
+    const box1X = cardX + 60, box1Y = notesY + 22, box1W = cardW - 120, box1H = 130;
+    roundRect(ctx, box1X, box1Y, box1W, box1H, 22);
+    ctx.fillStyle = "rgba(255,255,255,.10)";
+    ctx.fill();
+    ctx.strokeStyle = "rgba(255,255,255,.18)";
+    ctx.stroke();
+
+    const mistakes = (document.getElementById("mistakes").value || "").trim() || "—";
+    ctx.fillStyle = "rgba(255,255,255,.88)";
+    ctx.font = "700 26px system-ui, -apple-system, Segoe UI, Arial";
+    wrapText(ctx, mistakes, box1X + 18, box1Y + 38, box1W - 36, 32, 3);
+
+    // Comments
+    const comTitleY = box1Y + box1H + 55;
+    ctx.fillStyle = "rgba(255,255,255,.95)";
+    ctx.font = "950 28px system-ui, -apple-system, Segoe UI, Arial";
+    ctx.fillText("COMENTARIOS DEL PROFESOR", cardX + 60, comTitleY);
+
+    const box2X = cardX + 60, box2Y = comTitleY + 22, box2W = cardW - 120, box2H = 170;
+    roundRect(ctx, box2X, box2Y, box2W, box2H, 22);
+    ctx.fillStyle = "rgba(255,255,255,.10)";
+    ctx.fill();
+    ctx.strokeStyle = "rgba(255,255,255,.18)";
+    ctx.stroke();
+
+    const comments = (document.getElementById("comments").value || "").trim() || "—";
+    ctx.fillStyle = "rgba(255,255,255,.88)";
+    ctx.font = "700 26px system-ui, -apple-system, Segoe UI, Arial";
+    wrapText(ctx, comments, box2X + 18, box2Y + 38, box2W - 36, 32, 4);
+
+    // Footer
+    ctx.textAlign = "center";
+    ctx.fillStyle = "rgba(255,255,255,.55)";
+    ctx.font = "700 22px system-ui, -apple-system, Segoe UI, Arial";
+    ctx.fillText("Reporte generado • Evaluaciones", W/2, H - 50);
+
+    // Descargar
+    const link = document.createElement("a");
+    link.download = `evaluacion_${safeName(studentData.name)}.png`;
+    link.href = canvas.toDataURL("image/png");
+    link.click();
+  };
+
+  bg.onerror = () => {
+    toast("No pude cargar el fondo. Probá otra URL.");
+  };
 }
+
+/* ========= Helpers ========= */
+function roundRect(ctx, x, y, w, h, r){
+  const rr = Math.min(r, w/2, h/2);
+  ctx.beginPath();
+  ctx.moveTo(x+rr, y);
+  ctx.arcTo(x+w, y, x+w, y+h, rr);
+  ctx.arcTo(x+w, y+h, x, y+h, rr);
+  ctx.arcTo(x, y+h, x, y, rr);
+  ctx.arcTo(x, y, x+w, y, rr);
+  ctx.closePath();
+}
+
+function wrapText(ctx, text, x, y, maxWidth, lineHeight, maxLines){
+  const words = String(text).replace(/\s+/g," ").trim().split(" ");
+  let line = "";
+  let lines = 0;
+
+  for(let n=0; n<words.length; n++){
+    const testLine = line + words[n] + " ";
+    const metrics = ctx.measureText(testLine);
+    if(metrics.width > maxWidth && n > 0){
+      ctx.fillText(line.trim(), x, y);
+      line = words[n] + " ";
+      y += lineHeight;
+      lines++;
+      if(maxLines && lines >= maxLines){
+        // ellipsis
+        let clipped = line.trim();
+        while(ctx.measureText(clipped + "…").width > maxWidth && clipped.length>0){
+          clipped = clipped.slice(0,-1);
+        }
+        ctx.fillText(clipped + "…", x, y);
+        return;
+      }
+    }else{
+      line = testLine;
+    }
+  }
+  ctx.fillText(line.trim(), x, y);
+}
+
+function wrapCenter(ctx, text, cx, y, maxWidth, fontSize, maxLines){
+  // reduce font if too wide
+  let size = fontSize;
+  ctx.font = `950 ${size}px system-ui, -apple-system, Segoe UI, Arial`;
+  while(ctx.measureText(text).width > maxWidth && size > 36){
+    size -= 2;
+    ctx.font = `950 ${size}px system-ui, -apple-system, Segoe UI, Arial`;
+  }
+  // center wrap (simple)
+  // If still too wide, split by spaces
+  const words = String(text).split(" ");
+  if(words.length === 1){
+    ctx.fillText(text, cx, y);
+    return;
+  }
+  // build lines
+  const lines = [];
+  let current = "";
+  for(const w of words){
+    const test = current ? current + " " + w : w;
+    if(ctx.measureText(test).width <= maxWidth){
+      current = test;
+    } else {
+      lines.push(current);
+      current = w;
+      if(maxLines && lines.length >= maxLines) break;
+    }
+  }
+  if(current && (!maxLines || lines.length < maxLines)) lines.push(current);
+
+  const lh = Math.round(size * 1.1);
+  const startY = y - ((lines.length-1)*lh)/2;
+
+  lines.forEach((ln,i)=>{
+    ctx.fillText(ln, cx, startY + i*lh);
+  });
+}
+
+function safeName(s){
+  return String(s||"estudiante").toLowerCase().replace(/[^a-z0-9]+/g,"_").replace(/^_+|_+$/g,"");
+}
+
+function shakeAlert(){
+  const el = document.getElementById("alertBox");
+  el.style.transition = "transform .08s";
+  el.style.transform = "translateX(-6px)";
+  setTimeout(()=>el.style.transform="translateX(6px)", 90);
+  setTimeout(()=>el.style.transform="translateX(0px)", 180);
+}
+
+function toast(msg){
+  const t = document.createElement("div");
+  t.textContent = msg;
+  t.style.position="fixed";
+  t.style.left="50%";
+  t.style.bottom="24px";
+  t.style.transform="translateX(-50%)";
+  t.style.padding="12px 14px";
+  t.style.borderRadius="14px";
+  t.style.background="rgba(255,255,255,.86)";
+  t.style.color="#082424";
+  t.style.fontWeight="900";
+  t.style.boxShadow="0 16px 40px rgba(0,0,0,.22)";
+  t.style.border="1px solid rgba(8,36,36,.14)";
+  t.style.zIndex="9999";
+  document.body.appendChild(t);
+  setTimeout(()=>{ t.style.opacity="0"; t.style.transition="opacity .25s"; }, 1400);
+  setTimeout(()=>{ t.remove(); }, 1700);
+}
+
+/* Auto load if saved */
+(function init(){
+  try{
+    const saved = localStorage.getItem("eval_student");
+    if(saved){
+      const o = JSON.parse(saved);
+      if(o && o.name){
+        document.getElementById("studentName").value = o.name || "";
+        document.getElementById("studentLevel").value = o.level || "";
+        document.getElementById("studentStudy").value = o.study || "";
+      }
+    }
+  }catch(e){}
+})();
 </script>
 
 </body>
