@@ -1,89 +1,298 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Evaluaciones</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Evals4Coaches</title>
 
 <style>
 :root{
-  --bg-url: url("https://i.imgur.com/q7GHWbv.jpeg"); /* 🔥 CAMBIA ESTA URL */
+  --bg-url: url("https://i.imgur.com/q7GHWbv.jpeg");
+  --glass: rgba(255,255,255,.62);
+  --glass2: rgba(255,255,255,.38);
+  --ink: #1b1b1b;
+  --muted: rgba(27,27,27,.70);
+  --shadow: 0 26px 80px rgba(0,0,0,.18);
+  --shadow2: 0 12px 35px rgba(0,0,0,.14);
+  --r: 26px;
+  --r2: 22px;
 }
 
+*{ box-sizing:border-box; }
+html,body{ height:100%; }
 body{
   margin:0;
-  font-family: 'Segoe UI', sans-serif;
-  background-image: var(--bg-url);
-  background-size:cover;
-  background-position:center;
-  height:100vh;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  backdrop-filter: brightness(.9);
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, "Noto Sans", "Helvetica Neue", sans-serif;
+  color: var(--ink);
+  overflow:hidden;
 }
 
-.card{
-  background: rgba(255,255,255,.85);
-  padding:40px;
-  border-radius:20px;
+/* Fondo */
+body::before{
+  content:"";
+  position:fixed;
+  inset:0;
+  background-image: var(--bg-url);
+  background-size: cover;
+  background-position:center;
+  transform: scale(1.06);
+  filter: saturate(1.05) contrast(1.03);
+  z-index:-2;
+}
+body::after{
+  content:"";
+  position:fixed;
+  inset:0;
+  background:
+    radial-gradient(900px 520px at 15% 10%, rgba(255,255,255,.45), transparent 60%),
+    radial-gradient(800px 480px at 80% 15%, rgba(255,255,255,.25), transparent 62%),
+    linear-gradient(180deg, rgba(0,0,0,.14), rgba(0,0,0,.24));
+  z-index:-1;
+}
+
+/* Layout */
+.wrap{
+  height:100%;
+  display:grid;
+  place-items:center;
+  padding: 26px;
+}
+
+.frame{
+  width:min(980px, 94vw);
+  height:min(760px, 92vh);
+  border-radius: 34px;
+  background: rgba(255,255,255,.22);
+  border: 1px solid rgba(255,255,255,.35);
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(18px);
+  padding: 26px;
+  display:grid;
+  place-items:center;
+}
+
+.heroCard{
+  width:min(760px, 92vw);
+  height:min(560px, 78vh);
+  border-radius: 28px;
+  position:relative;
+  overflow:hidden;
+  box-shadow: 0 26px 70px rgba(0,0,0,.18);
+  border: 1px solid rgba(255,255,255,.40);
+  background: linear-gradient(180deg, rgba(255, 168, 120, .72), rgba(255, 156, 110, .72));
+}
+
+/* Brillo suave */
+.heroCard::before{
+  content:"";
+  position:absolute;
+  inset:-60px;
+  background:
+    radial-gradient(420px 260px at 30% 20%, rgba(255,255,255,.35), transparent 60%),
+    radial-gradient(380px 240px at 70% 65%, rgba(255,255,255,.20), transparent 64%);
+  filter: blur(6px);
+  opacity:.85;
+}
+
+/* Borde interno */
+.heroCard::after{
+  content:"";
+  position:absolute;
+  inset: 10px;
+  border-radius: 22px;
+  border: 1px solid rgba(255,255,255,.28);
+  pointer-events:none;
+}
+
+.center{
+  position:relative;
+  z-index:2;
+  height:100%;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
   text-align:center;
-  box-shadow:0 20px 50px rgba(0,0,0,.3);
-  width:400px;
+  padding: 34px;
+}
+
+.brand{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding: 10px 14px;
+  border-radius: 999px;
+  background: rgba(255,255,255,.22);
+  border: 1px solid rgba(255,255,255,.26);
+  color: rgba(255,255,255,.92);
+  font-weight: 900;
+  letter-spacing:.3px;
+  box-shadow: var(--shadow2);
+  margin-bottom: 18px;
+}
+.dot{
+  width:10px;height:10px;
+  border-radius:999px;
+  background: rgba(255,255,255,.95);
+  box-shadow: 0 0 0 6px rgba(255,255,255,.16);
 }
 
 h1{
-  margin-top:0;
+  margin:0;
+  font-size: clamp(44px, 6vw, 64px);
+  line-height: 1.05;
+  letter-spacing: .6px;
+  font-weight: 1000;
+  color: rgba(255,255,255,.96);
+  text-shadow: 0 10px 24px rgba(0,0,0,.25);
 }
 
-.message{
-  background:#f4f4f4;
-  padding:15px;
-  border-radius:12px;
-  margin-bottom:25px;
-  font-style:italic;
+.sub{
+  margin-top: 12px;
+  font-size: clamp(16px, 2.4vw, 22px);
+  color: rgba(255,255,255,.85);
+  font-weight: 700;
 }
 
-.enter-box{
-  width:150px;
-  height:150px;
-  margin:auto;
-  background:linear-gradient(45deg,#00c6ff,#0072ff);
-  border-radius:20px;
+.hint{
+  margin-top: 24px;
+  font-size: 13px;
+  color: rgba(255,255,255,.80);
+  opacity:.9;
+}
+
+/* Botón grande (como “click to enter”) */
+.enter{
+  margin-top: 34px;
+  width: min(360px, 86%);
+  height: 74px;
+  border-radius: 22px;
+  border: 1px solid rgba(255,255,255,.32);
+  background: rgba(255,255,255,.18);
+  color: rgba(255,255,255,.96);
+  font-weight: 950;
+  letter-spacing: .9px;
+  cursor:pointer;
+  box-shadow: 0 22px 60px rgba(0,0,0,.18);
+  position:relative;
+  overflow:hidden;
+  transition: transform .18s ease, box-shadow .18s ease, background .18s ease;
   display:flex;
   align-items:center;
   justify-content:center;
-  color:white;
-  font-weight:bold;
-  cursor:pointer;
-  transition:.3s;
-  box-shadow:0 10px 30px rgba(0,0,0,.3);
+  gap: 10px;
+  user-select:none;
 }
 
-.enter-box:hover{
-  transform:scale(1.1);
+.enter::before{
+  content:"";
+  position:absolute;
+  inset:-80px;
+  background:
+    radial-gradient(220px 120px at 20% 20%, rgba(255,255,255,.35), transparent 60%),
+    radial-gradient(240px 160px at 80% 70%, rgba(255,255,255,.18), transparent 64%);
+  transform: rotate(12deg);
+  opacity:.8;
+}
+
+.enter span{
+  position:relative;
+  z-index:2;
+}
+
+.enter .arrow{
+  position:relative;
+  z-index:2;
+  font-size: 20px;
+  transform: translateY(1px);
+  transition: transform .18s ease;
+}
+
+.enter:hover{
+  transform: translateY(-2px) scale(1.02);
+  background: rgba(255,255,255,.22);
+  box-shadow: 0 28px 75px rgba(0,0,0,.22);
+}
+.enter:hover .arrow{
+  transform: translateY(1px) translateX(3px);
+}
+.enter:active{
+  transform: translateY(0px) scale(.995);
+}
+
+/* Loader mini */
+.loading{
+  pointer-events:none;
+  opacity:.85;
+}
+.spinner{
+  width:18px;height:18px;
+  border-radius:999px;
+  border: 3px solid rgba(255,255,255,.55);
+  border-top-color: rgba(255,255,255,.95);
+  animation: spin .9s linear infinite;
+}
+@keyframes spin{ to{ transform: rotate(360deg); } }
+
+/* Footer mini */
+.footer{
+  margin-top: 22px;
+  font-size: 12px;
+  color: rgba(255,255,255,.72);
+}
+
+/* Responsive */
+@media (max-width: 520px){
+  .frame{ padding: 16px; border-radius: 26px; }
+  .heroCard{ border-radius: 22px; }
+  .center{ padding: 22px; }
+  .enter{ height: 68px; border-radius: 20px; }
 }
 </style>
 </head>
 
 <body>
+  <div class="wrap">
+    <div class="frame">
+      <div class="heroCard" id="heroCard">
+        <div class="center">
+          <div class="brand">
+            <div class="dot"></div>
+            <div>Evals4Coaches</div>
+          </div>
 
-<div class="card">
-  <h1>Evaluaciones</h1>
-  <div class="message">
-    Presiona el cuadro para comenzar con el sistema de evaluación.
-  </div>
+          <h1>Evaluations</h1>
+          <div class="sub">Evaluations for coaches</div>
+          <div class="hint">Click para entrar al dashboard y comenzar la evaluación.</div>
 
-  <div class="enter-box" onclick="goDashboard()">
-    ENTRAR
+          <div class="enter" id="enterBtn" role="button" tabindex="0" aria-label="Entrar al dashboard">
+            <span>CLICK TO ENTER</span>
+            <span class="arrow">→</span>
+          </div>
+
+          <div class="footer">© 2026 • Sistema de Evaluaciones</div>
+        </div>
+      </div>
+    </div>
   </div>
-</div>
 
 <script>
-function goDashboard(){
-  window.location.href="dashboard.html";
-}
-</script>
+const enterBtn = document.getElementById("enterBtn");
 
+function goDashboard(){
+  // efecto mini loading bonito
+  enterBtn.classList.add("loading");
+  enterBtn.innerHTML = '<div class="spinner"></div><span>ENTRANDO...</span>';
+  setTimeout(()=> window.location.href = "dashboard.html", 420);
+}
+
+enterBtn.addEventListener("click", goDashboard);
+enterBtn.addEventListener("keydown", (e)=>{
+  if(e.key === "Enter" || e.key === " "){
+    e.preventDefault();
+    goDashboard();
+  }
+});
+</script>
 </body>
 </html>
