@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard Evaluación</title>
+
+<style>
+:root{
+  --bg-url: url("https://i.imgur.com/q7GHWbv.jpeg"); /* 🔥 MISMA URL */
+}
+
+body{
+  margin:0;
+  font-family:'Segoe UI', sans-serif;
+  background-image: var(--bg-url);
+  background-size:cover;
+  background-position:center;
+  padding:40px;
+}
+
+.container{
+  background:rgba(255,255,255,.9);
+  padding:30px;
+  border-radius:20px;
+  box-shadow:0 20px 50px rgba(0,0,0,.3);
+}
+
+.alert{
+  background:#ffcccc;
+  padding:15px;
+  border-radius:10px;
+  margin-bottom:20px;
+  font-weight:bold;
+}
+
+input, select, textarea{
+  width:100%;
+  padding:12px;
+  margin:10px 0;
+  border-radius:12px;
+  border:1px solid #ccc;
+  font-size:14px;
+}
+
+button{
+  padding:12px 20px;
+  border:none;
+  border-radius:12px;
+  background:#0072ff;
+  color:white;
+  cursor:pointer;
+  font-weight:bold;
+  margin-top:10px;
+}
+
+button:hover{
+  opacity:.9;
+}
+
+.grid{
+  display:grid;
+  grid-template-columns: 1fr 120px;
+  gap:10px;
+  align-items:center;
+}
+
+.total{
+  font-size:18px;
+  font-weight:bold;
+  margin-top:15px;
+}
+
+textarea{
+  background:rgba(255,255,255,.6);
+  resize:none;
+}
+
+.hidden{
+  display:none;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+  <div class="alert" id="alertBox">
+    ¡ESPERA! todavía no pones los datos
+  </div>
+
+  <div id="studentForm">
+    <input type="text" id="studentName" placeholder="Nombre del estudiante">
+    <input type="text" id="studentLevel" placeholder="Nivel">
+    <input type="text" id="studentStudy" placeholder="Qué estudia">
+    <button onclick="saveStudent()">Aceptar</button>
+  </div>
+
+  <div id="evaluationSection" class="hidden">
+
+    <div class="grid">
+      <div>Grammar</div>
+      <select onchange="calculate()">
+        <option>2</option><option>1.5</option><option>1</option><option>0.5</option><option>0</option>
+      </select>
+
+      <div>Pronunciation</div>
+      <select onchange="calculate()">
+        <option>2</option><option>1.5</option><option>1</option><option>0.5</option><option>0</option>
+      </select>
+
+      <div>Intonation</div>
+      <select onchange="calculate()">
+        <option>2</option><option>1.5</option><option>1</option><option>0.5</option><option>0</option>
+      </select>
+
+      <div>Fluency</div>
+      <select onchange="calculate()">
+        <option>2</option><option>1.5</option><option>1</option><option>0.5</option><option>0</option>
+      </select>
+
+      <div>Comprehension</div>
+      <select onchange="calculate()">
+        <option>2</option><option>1.5</option><option>1</option><option>0.5</option><option>0</option>
+      </select>
+    </div>
+
+    <div class="total">Total: <span id="totalScore">10</span></div>
+
+    <textarea id="mistakes" rows="3" placeholder="Palabras que falló"></textarea>
+    <textarea id="comments" rows="3" placeholder="Comentarios del profesor"></textarea>
+
+    <button onclick="generateImage()">Generar Imagen</button>
+
+  </div>
+
+</div>
+
+<script>
+let studentData = {};
+
+function saveStudent(){
+  studentData.name = document.getElementById("studentName").value;
+  studentData.level = document.getElementById("studentLevel").value;
+  studentData.study = document.getElementById("studentStudy").value;
+
+  if(!studentData.name) return;
+
+  document.getElementById("alertBox").style.display="none";
+  document.getElementById("studentForm").style.display="none";
+  document.getElementById("evaluationSection").classList.remove("hidden");
+}
+
+function calculate(){
+  let selects = document.querySelectorAll("select");
+  let total = 0;
+  selects.forEach(s => total += parseFloat(s.value));
+  document.getElementById("totalScore").innerText = total;
+}
+
+function generateImage(){
+  let canvas = document.createElement("canvas");
+  canvas.width = 800;
+  canvas.height = 600;
+  let ctx = canvas.getContext("2d");
+
+  let bg = new Image();
+  bg.crossOrigin="anonymous";
+  bg.src = "https://i.imgur.com/XXXXXXX.jpg"; /* MISMA URL */
+
+  bg.onload = function(){
+    ctx.drawImage(bg,0,0,800,600);
+
+    ctx.fillStyle="white";
+    ctx.font="20px Arial";
+    ctx.fillText("Evaluación del Estudiante", 20,40);
+
+    ctx.fillText("Nombre: "+studentData.name, 20,80);
+    ctx.fillText("Nivel: "+studentData.level, 20,110);
+    ctx.fillText("Estudia: "+studentData.study, 20,140);
+
+    ctx.fillText("Total: "+document.getElementById("totalScore").innerText, 20,180);
+
+    ctx.fillText("Errores: "+document.getElementById("mistakes").value, 20,220);
+    ctx.fillText("Comentarios: "+document.getElementById("comments").value, 20,260);
+
+    let link = document.createElement("a");
+    link.download="evaluacion.png";
+    link.href=canvas.toDataURL();
+    link.click();
+  }
+}
+</script>
+
+</body>
+</html>
